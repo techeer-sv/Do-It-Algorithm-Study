@@ -4,6 +4,8 @@ class Solution {
     Integer[] scoreList;
     String key;
     int index;
+    Map<String, ArrayList<Integer>> infoM;
+    String[] infoS = new String[4];
     public int[] solution(String[] info, String[] query) {
         /*
             (5 * 10^4) * 10^5 -> 시간초과 (각 query 마다 info 배열 전체 탐색 x)
@@ -21,98 +23,74 @@ class Solution {
         int[] answer = new int[queryL];
         int score;
         
-        // 코테 점수 기준 오름차순 정렬
-        Arrays.sort(info, new Comparator<String>(){            
-            @Override
-            public int compare(String a, String b){
-                int s1 = Integer.parseInt(a.split(" ")[4]);
-                int s2 = Integer.parseInt(b.split(" ")[4]);
-                if (s1 > s2)
-                    return 1;
-                else if (s1 < s2)
-                    return -1;
-                else
-                    return 0;
-            }
-        });
-                
-        Map<String, LinkedList<Integer>> infoM = new HashMap<String, LinkedList<Integer>>();
+        // 코테 점수 기준 오름차순 정렬 (람다식으로 변경) nlogn 
+        Arrays.sort(info, (a, b) ->
+             Integer.valueOf(a.split(" ")[4]).compareTo(Integer.valueOf(b.split(" ")[4]))
+        );
+        
+        infoM = new HashMap<String, ArrayList<Integer>>(110);
         
         for (int i = 0; i< infoL; i++){
-            String[] split = info[i].split(" ");
-            key = sliceTwo(split[0])+sliceTwo(split[1])+
-                sliceTwo(split[2])+sliceTwo(split[3]);
-            score = Integer.parseInt(split[4]);
-
-            LinkedList<Integer> list = infoM.get(key);
-            if (list != null){
-                list.add(score);
-            } else{
-                infoM.put(key, new LinkedList<Integer>(Arrays.asList(score)));
-            }
+            dfs(infoS, 0, info[i].split(" "));
         }
         
-        Set<String> keyset = infoM.keySet();             
-        
         for (int i = 0; i< queryL; i++){
-            String[] split = query[i].split(" ");
-            key = "";                
-            key += queryParsing(split);
+            String[] split = query[i].split(" and | ");
+            key = "";
+            Arrays.stream(Arrays.copyOf(split,split.length-1)).forEach(s -> key += (sliceOne(s)));
             score = Integer.parseInt(split[split.length-1]);
-                        
-            if (!key.contains(".*")){
-                answer[i] = countUpperScore(infoM.get(key), score);
-            } else {
-                // query의 "-" 조건이 들어가있는 경우
-                for (String k : keyset){
-                    if (k.matches(key)){
-                        answer[i] += countUpperScore(infoM.get(k), score);
-                    }                    
-                }    
-                System.out.println();
-            }
+            answer[i] = countUpperScore(infoM.get(key), score);
         }
         
         return answer;
     }
-    
-    // 언어의 앞 두글자 사용 (map의 key 탐색 시간 단축)
-    public String sliceTwo(String s){
-        return s.substring(0,2);
-    }
-    
-    // 추후 정규표현식 문자열 검색
-    public String queryParsing(String[] tokens){
-        String temp = "";
-        for (int i = 0; i<tokens.length-1; i++){
-            if (!tokens[i].equals("and")){
-                if (i > 1 && tokens[i-2].equals(tokens[i])){
-                    continue;
-                } else
-                    temp += tokens[i].equals("-") ? ".*" : sliceTwo(tokens[i]);               
-            }
+        
+    public void dfs(String[] keys, int length, String[] conditions){
+        if (length == 4){
+            String key = String.join("", keys);
+            ArrayList<Integer> list = infoM.get(key);
+            
+            if (list != null)
+                list.add(Integer.parseInt(conditions[4]));
+            else
+                infoM.put(key, new ArrayList<Integer>(Arrays.asList(Integer.valueOf(conditions[4]))));
         }
-        return temp;
+        else {
+            keys[length] = sliceOne(conditions[length]);
+            dfs(keys, length+1, conditions);
+            keys[length] = "-";
+            dfs(keys, length+1, conditions);
+        }
     }
+
+    // 언어의 앞글자 사용 (map의 key 탐색 시간 단축)
+    public String sliceOne(String s){
+        return s.substring(0,1);
+    }
+    
     
     // list중 score보다 큰 점수 count
-    public int countUpperScore(LinkedList<Integer> list, int s) {
+    public int countUpperScore(ArrayList<Integer> list, int s) {
         if (list != null){
-            scoreList = list.toArray(new Integer[list.size()]);
-
-            index = Arrays.binarySearch(scoreList, s);            
-            index = index >= 0 ? index : -(index+1);
-            
-            // java의 이진 탐색 구현 중, 같은 원소가 여러개일 때 index를 무작위로 반환하는 경우 방지
-            while (index >= 1 && index < scoreList.length)
-                if (scoreList[index-1] >= s)
-                    index--;
-                else
-                    break;
-            
-            return scoreList.length - index;
+            return list.size() - bs(list, s);
         } else
             return 0;
+    }
+    
+    public int bs(ArrayList<Integer> list, int s){
+        int left = 0; int right = list.size()-1;
+        
+        while (left <= right){
+            int mid = (right + left)/2;
+            
+            if (list.get(mid) < s)
+                left = mid + 1; 
+            else{
+                right = mid - 1;
+            }
+        }
+        
+        return left;
     }
     
 }
