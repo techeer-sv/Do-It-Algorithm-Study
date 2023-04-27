@@ -12,13 +12,7 @@ class Solution {
             int truckWeight = truck_weights[i]; // 적절한 작명이 떠오르지 못했다...2 하여 값은 값을 지닌 변수 2개를 선언할까도 생각했었다..(truck, truckWeight)
 
             while(true){
-
-                if(bridgeQueue.isEmpty()){
-                    bridgeQueue.add(truckWeight);
-                    bridgeWeight += truckWeight;
-                    time++;
-                    break;
-                }else if(bridgeQueue.size() == bridge_length){
+                if(bridgeQueue.size() == bridge_length){
                     bridgeWeight -= bridgeQueue.poll();
                 }else{
                     if(truckWeight + bridgeWeight <= weightLimit){
