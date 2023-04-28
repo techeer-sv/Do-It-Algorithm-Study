@@ -19,6 +19,5 @@
 
 - 오홍기 (leader) - https://github.com/ohhonggi
 - 김서영 - https://github.com/ksy990628
-- 김혜린 - https://github.com/Kim-Hye-Lin
 - 윤일권 - https://github.com/1ilkwon
 - 정윤호 - https://github.com/yunhobb
