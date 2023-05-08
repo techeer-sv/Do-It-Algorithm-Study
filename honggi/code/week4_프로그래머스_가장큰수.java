@@ -1,102 +1,48 @@
 import java.util.*;
 class Solution {
-    
     /*
-     * 1. 원소의 앞자리 수끼리 비교하여, 앞자리가 큰 원소 순으로 정렬 후 전체를 더해 가장 큰 수 구하기 -> 몇몇 테스트케이스 틀림..
-        1) 같은 경우, 다음 자리 수를 비교
-     * 2. 원소로 가능한 모든 수를 조합한 후, 정렬하여 가장 큰 수 구하기 -> 절반 이상 시간초과
+        가장 큰 수를 만들 수 있도록 numbers를 오름차순으로 정렬하여 큰 수 만들기
+        정렬 방법
+        -> 두 원소의 첫 번째 인덱스의 값부터, 둘 중 길이가 큰 원소의 마지막 인덱스까지 비교하여 대소 비교
+            1) 두 원소 중 길이가 적은 원소의 경우, 인덱스를 원소의 길이로 나머지 연산을 적용하여 비교
+              ex) [12,123] 의 경우, 1과 3이 비교됨
+            2) 모든 비교까지가 동일한 경우, 두 원소로 만들어지는 두 개의 수를 대소비교
+              ex) [121, 1212] -> 1212121 와 1211212을 비교
     */
-    // int minL;
-    boolean[] visited;
-    int numL;
-    LinkedList<String> numList;
-    String[] numberI;
     public String solution(int[] numbers) {
         String answer = "";
-        numL = numbers.length;
-        visited = new boolean[numL];
-        numberI = new String[numL];
-        numList = new LinkedList<String>();
-        
+        int numL = numbers.length;
+        String[] numberI = new String[numL];
+
         Arrays.setAll(numberI, i -> String.valueOf(numbers[i]));
-        
-        for (int i = 0; i< numL; i++)
-            if (!numberI[i].equals("0"))
-                maxNum(0,i,"");
-        
-        String[] allnum = numList.toArray(new String[numList.size()]);
-        
-        Arrays.sort(allnum, (a,b) -> {
-            if (Integer.compare(a.length(), b.length()) != 0)
-                return Integer.compare(a.length(), b.length());
-            else{
-                int index = 0;
-                while (index < a.length()){
-                    if (Character.compare(a.charAt(index), b.charAt(index)) != 0)
-                        return Character.compare(a.charAt(index), b.charAt(index));
-                    index++;
-                }
-                return 0;
-            }
+
+        Arrays.sort(numberI, (a, b) -> {
+            if (a.length() == b.length())
+                return Integer.compare(Integer.parseInt(a), Integer.parseInt(b));
+            else
+                return a.length() < b.length() ? compareTwoArray(a,b) : -compareTwoArray(b,a);
         });
+
+        for (int i = numberI.length-1; i>=0; i--)
+            answer += numberI[i];
         
-        return allnum[allnum.length-1];
+        // 모든 원소가 0인 경우
+        if (answer.charAt(0) == '0')
+            return "0";
+        else
+            return answer;
     }
-    
-    public void maxNum(int depth, int index, String nums){
-        if (depth == numL){
-            numList.add(nums);
-        } else if (!visited[index]){
-            visited[index] = true;
-            
-            for (int i = 0; i<numL; i++){
-                maxNum(depth+1, i, nums + numberI[index]);
-            }
-            visited[index] = false;
+
+    public int compareTwoArray(String s1, String s2){
+        int index = 0;
+        int s1L = s1.length();
+        int s2L = s2.length();
+        
+        while (index < s2L){
+            if (Character.compare(s1.charAt(index % s1L), s2.charAt(index)) != 0)
+                return Character.compare(s1.charAt(index % s1L), s2.charAt(index));
+            index++;
         }
+        return Integer.compare(Integer.parseInt(s1 + s2), Integer.parseInt(s2 + s1));
     }
-        
-//         Arrays.setAll(numberI, i -> numbers[i]);
-        
-//         Arrays.sort(numberI, (a, b) -> {
-//             String[] s1 = String.valueOf(a).split("");
-//             String[] s2 = String.valueOf(b).split("");
-//             minL = Math.min(s1.length, s2.length);
-//             int index = 0;
-            
-//             while (index < minL){
-//                 if (compareStringToInt(s1[index], s2[index]) != 0){
-//                     return compareStringToInt(s1[index], s2[index]);
-//                 } else {
-//                     index++;
-//                 }
-//             }
-            
-//             return s1.length < s2.length ?
-//                 compareTwoArray(s1,s2,index) : compareTwoArray(s2,s1,index);
-//         });
-
-        
-//         for (int i = numberI.length-1; i>=0; i--)
-//             answer += numberI[i];
-        
-//         return answer;
-//     }
-    
-//     public int compareTwoArray(String[] s1, String[] s2, int index){
-
-//         while (index < s2.length){
-//             if (compareStringToInt(s1[minL-1], s2[index]) != 0){
-//                 System.out.println(s1[minL-1]+" "+ s2[index]+"="+compareStringToInt(s1[minL-1], s2[index]));
-//                 return compareStringToInt(s1[minL-1], s2[index]);
-//             } else{
-//                 index++;
-//             }
-//         }
-//         return 0;
-//     }
-    
-//     public int compareStringToInt(String a, String b){
-//         return Integer.compare(Integer.parseInt(a), Integer.parseInt(b));
-//     }
 }
