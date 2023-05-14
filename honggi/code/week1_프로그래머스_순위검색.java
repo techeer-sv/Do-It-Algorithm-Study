@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 프로그래머스_순위검색 {
     Integer[] scoreList;
     String key;
     int index;
