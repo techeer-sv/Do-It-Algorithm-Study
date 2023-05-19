@@ -1,5 +1,5 @@
 import java.util.*;
-class Solution {
+class 프로그래머스_가장큰수 {
     /*
         가장 큰 수를 만들 수 있도록 numbers를 오름차순으로 정렬하여 큰 수 만들기
         정렬 방법 -> 두 원소로 만들 수 있는 두 개의 수를 대소 비교

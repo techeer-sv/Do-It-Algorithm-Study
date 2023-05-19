@@ -1,5 +1,4 @@
-import java.util.*;
-class Solution {
+class 프로그래머스_모음사전 {
     /*
         재귀 함수를 사용한 풀이
         A부터 UUUUU까지의 알파벳을 만들면서, 주어진 단어 word와

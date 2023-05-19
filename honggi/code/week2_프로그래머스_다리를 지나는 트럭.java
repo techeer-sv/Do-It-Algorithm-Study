@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 프로그래머스_다리를_지나는_트럭 {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
         /*
             모든 트럭은 다리 길이만큼 건너야 한다는 것 = 다리에 올라갈 수 있는 트럭의 최대 개수

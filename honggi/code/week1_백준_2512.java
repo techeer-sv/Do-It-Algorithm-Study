@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class 백준_2512 {
+public class week1_백준_2512 {
     public static void main(String[] args) throws IOException {
         /*
             1. 총합이 예산보다 적은 경우 -> 요청 금액 중 최대값 산출
