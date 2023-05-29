@@ -36,7 +36,7 @@ class Solution {
                 index += digit;
             else{ 
                 s = removedStringInfo[0];
-                // 다음 pattern이 시작되는 index 계산
+                // 다음 pattern이 시작되는 index 계산 (패턴 단위 + 연속된 문자열 개수)
                 index += digit + removedStringInfo[1].length();
             }
         }
@@ -48,10 +48,12 @@ class Solution {
         int patternCount = 1;
         int digit = pattern.length();
         
+        // 패턴 다음으로 연속되는 문자열 탐색
         while (index + 2*digit <= s.length()){
+            // 패턴 다음으로 연속되는 문자열 자르기
             String comparedPattern = s.substring(index + digit, index + 2*digit);
             
-            // 연속되는 문자열이 존재하는 경우
+            // 패턴과 일치하는 연속된 문자열이 존재하는 경우
             if (pattern.equals(comparedPattern)){
                 // 해당 문자열 제외
                 s = s.substring(0, index) + s.substring(index+digit);
@@ -65,7 +67,7 @@ class Solution {
         if (patternCount == 1)
             return new String[]{s, String.valueOf(patternCount)};
         else{
-            // pattern 앞에 연속된 문자열 개수를 붙여서 반환
+            // pattern 앞에 연속된 문자열 개수를 붙여서 반환 ( abab -> 2ab )
             return new String[]{s.substring(0, index) + patternCount + 
                                s.substring(index, s.length()), String.valueOf(patternCount)};
         }
