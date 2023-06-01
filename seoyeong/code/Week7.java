@@ -5,14 +5,15 @@ import java.util.LinkedList;
 
 public class Week7{
     public static void main(String[]args){
-        // System.out.println(solution(new int[][]{{1,0,1,1,1},{1,0,1,0,1},{1,0,1,1,1},{1,1,1,0,1},{0,0,0,0,1}})); // 11
-        System.out.println(solution(new int[][]{{1,0,1,1,1},{1,0,1,0,1},{1,0,1,1,1},{1,1,1,0,0},{0,0,0,0,1}})); // -1
+        //System.out.println(solution(new int[][]{{1,0,1,1,1},{1,0,1,0,1},{1,0,1,1,1},{1,1,1,0,1},{0,0,0,0,1}})); // 11
+        //System.out.println(solution(new int[][]{{1,1,1,1,1},{1,0,1,1,1},{1,0,1,1,1},{1,0,0,0,1},{0,1,1,0,1}})); // 9
+        //System.out.println(solution(new int[][]{{1,0,1,1,1},{1,0,1,0,1},{1,0,1,1,1},{1,1,1,0,0},{0,0,0,0,1}})); // -1
         /*
-        * 1,0,1,1,1
-        * 1,0,1,0,1
-        * 1,0,1,1,1
-        * 1,1,1,0,1
-        * 0,0,0,0,1
+        1,1,1,1,1
+        1,0,1,1,1
+        1,0,1,1,1
+        1,0,0,0,1
+        0,1,1,0,1
         * */
     }
 
@@ -24,13 +25,21 @@ public class Week7{
         queue.add(new Integer[]{x, y});
 
         while (queue.size()>0){
+            System.out.println("\n");
+            /*
+            for (int k=0; k<queue.size();k++){
+                System.out.print(queue.get(k)[0]+","+queue.get(k)[1]+" ");
+            }
+            */
+
+
             Integer[] pos = queue.pollFirst();
             x = pos[0];
             y = pos[1];
-
             if (x==maps.length-1 && y==maps[0].length-1) break;
 
-            System.out.println("\n"+x+" "+y);
+            System.out.println("");
+            System.out.println(+x+" "+y);
             for (int i=0; i<maps.length; i++){
                 for (int j=0; j<maps[0].length;j++){
                     System.out.print(maps[i][j]+" ");
@@ -39,20 +48,19 @@ public class Week7{
             }
 
 
-
-
             // 이동할 수 있는 값 구하기
             for (int i=0; i<4; i++){
                 int newX = x+dx[i];
                 int newY = y+dy[i];
-                if (newX >= 0 && newX < maps.length && newY >= 0 && newY < maps[0].length && maps[newX][newY]>0){
-                    maps[newX][newY] = maps[x][y]+1;
-                    queue.add(new Integer[]{newX, newY});
+                if (newX < 0 || newX >= maps.length || newY < 0 || newY >= maps[0].length) continue;
+                if (maps[newX][newY] == 0) continue;
+                if (maps[newX][newY]==1){
+                maps[newX][newY] = maps[x][y]+1;
+                queue.add(new Integer[]{newX, newY});
                 }
             }
             maps[x][y] = 0; // 이미 지나온 길은 갈 수 없는 길 (0)으로 만들기
         }
-
         int max = 0;
         for (int i=0; i<maps.length; i++){
             for (int j=0; j<maps[0].length;j++){
