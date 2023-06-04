@@ -10,7 +10,6 @@ public class Week8 {
     public static void main(String[]args){
         System.out.println(solution(new String[][]{{"yellow_hat", "headgear"},
                 {"blue_sunglasses", "eyewear"}, {"green_turban", "headgear"}})); // 5
-        //System.out.println(solution(new int[][]{{1,0,1,1,1},{1,0,1,0,1},{1,0,1,1,1},{1,1,1,0,0},{0,0,0,0,1}})); // -1
     }
 
     public static int solution(String[][] clothes) {
