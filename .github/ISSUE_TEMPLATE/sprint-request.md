@@ -8,11 +8,9 @@ assignees: ''
 ---
 
 ## n주차 Sprint ( 2023. ~ 2023. )
-Chapter 범위 : ~장
 
 ## Description
-chapter 간단 요약 or 작성 사항
+- 문제 링크 :
 
 ## To-do
 - [ ] Week n - Common problem solution
-- [ ] Week n - Sprint progress
