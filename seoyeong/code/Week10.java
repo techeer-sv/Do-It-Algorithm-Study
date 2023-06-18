@@ -15,12 +15,18 @@ public class DoitJava_Week10 {
         System.out.println(ans3);
     }
 
-
     public static int solution(int[] queue1, int[] queue2) {
         int answer = 0;
-        int maxMove = queue1.length*4;  // 최대 이동 횟수를 정해줘야함, 안그러면 무한루프트 걸릴 수도...
-        long q1_sum = Arrays.stream(queue1).sum();
-        long q2_sum = Arrays.stream(queue2).sum();
+        int maxMove = queue1.length*4;
+        long q1_sum = 0;
+        long q2_sum = 0;
+        // ㅎ 아래 방식처럼 stream해서 sum하면, 틀림
+        // long q1_sum = Arrays.stream(queue1).sum();
+        // long q2_sum = Arrays.stream(queue2).sum();
+        for (int i=0; i< queue1.length; i++){
+            q1_sum += queue1[i];
+            q2_sum += queue2[i];
+        }
         long mid = (q1_sum + q2_sum)/2;
 
         if ((q1_sum+q2_sum)%2!=0) return -1; // 중간값이 홀수이면, 불가능
@@ -33,7 +39,7 @@ public class DoitJava_Week10 {
         while (q1_sum != mid){
             if (q1_sum <= 0 || q2_sum <= 0)
                 return -1;
-            if (answer >= maxMove) 
+            if (answer >= maxMove)
                 return -1;
             // 두 큐 중에 값이 더 부족한 곳으로 이동
             if (q1_sum < mid){
