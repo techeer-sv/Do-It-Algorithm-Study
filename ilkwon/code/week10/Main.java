@@ -8,7 +8,8 @@ class Solution {
         Queue<Integer>q2 = new LinkedList<>();
         long sum1 = 0;
         long sum2 = 0;
-        int len = queue1.length;
+        int len1 = queue1.length;
+        int len2 = queue2.length;
 
         for(int i=0; i<len; i++){
             sum1 += queue1[i];
@@ -32,7 +33,7 @@ class Solution {
                 q1.add(q2value);
             }
 
-            if(answer > (queue1.length + queue2.length) * 2) {
+            if(answer > (len1 + len2) * 2) {
                 return -1;
             }
         }
