@@ -15,7 +15,45 @@ class Solution {
         4.
     */
     public int solution(int[] queue1, int[] queue2) {
-        int answer = -2;
+        int answer = 0;
+        int sumQ1 = 0;
+        int sumQ2 = 0;
+        int halfSum = 0;
+        Queue<Integer> q1 = new LinkedList<Integer>();
+        Queue<Integer> q2 = new LinkedList<Integer>();
+
+        for (int i : queue1) {
+            q1.offer(i);
+            sumQ1 += i;
+        }
+        for (int j : queue2) {
+            q2.offer(j);
+            sumQ2 += j;
+        }
+
+        if ((sumQ1 + sumQ2) % 2 == 1) {
+            return -1;
+        }
+
+        halfSum = (sumQ1 + sumQ2) / 2;
+
+        while (sumQ1 != sumQ2) {
+            if (sumQ1 > sumQ2) {
+                int x = q1.poll();
+                q2.offer(x);
+                sumQ1 -= x;
+                sumQ2 += x;
+                answer++;
+            } else {
+                int x = q2.poll();
+                q1.offer(x);
+                sumQ1 += x;
+                sumQ2 -= x;
+                answer++;
+            }
+        }
+
         return answer;
     }
+
 }
