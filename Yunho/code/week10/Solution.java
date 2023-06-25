@@ -16,9 +16,11 @@ class Solution {
     */
     public int solution(int[] queue1, int[] queue2) {
         int answer = 0;
-        int sumQ1 = 0;
-        int sumQ2 = 0;
-        int halfSum = 0;
+        long sumQ1 = 0;
+        long sumQ2 = 0;
+        long halfSum = 0;
+        int len1 = queue1.length;
+        int len2 = queue2.length;
         Queue<Integer> q1 = new LinkedList<Integer>();
         Queue<Integer> q2 = new LinkedList<Integer>();
 
@@ -34,8 +36,9 @@ class Solution {
         if ((sumQ1 + sumQ2) % 2 == 1) {
             return -1;
         }
+        
 
-        halfSum = (sumQ1 + sumQ2) / 2;
+        halfSum =(long) (sumQ1 + sumQ2) / 2;
 
         while (sumQ1 != sumQ2) {
             if (sumQ1 > sumQ2) {
@@ -51,6 +54,9 @@ class Solution {
                 sumQ2 -= x;
                 answer++;
             }
+        if(answer > (len1 + len2) * 2) {
+        return -1;
+        }
         }
 
         return answer;
