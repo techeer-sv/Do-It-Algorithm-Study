@@ -13,8 +13,17 @@ public class Main {
     public static void main(String[] args) throws IOException {
         /*
             게임 개발 - https://www.acmicpc.net/problem/1516
-            모든 건물을 짓는데 걸리는 최소 시간 구하기
-            건물을 짓기 위해 우선적으로 지어야 하는 건물 존재 가능 -> dp를 이용한 풀이
+
+            건물을 짓기 위해 먼저 지어야 하는 건물 존재 가능 
+                -> dfs와 dp를 이용하여 최단 시간 + 메모리 활용
+
+            1. 건물마다 짓는데 걸리는 시간, 먼저 지어야 하는 건물 정보 분류하기
+                먼저 지어야 하는 건물 정보가 없는경우 -> 건물 짓는데 걸리는 시간이 최소 시간
+
+            2. 건물 짓기 (dfs)
+                1) 먼저 지어야 하는 건물들 중, 가장 오래걸리는 건물 시간 구하기
+                2) 해당 건물을 짓는데 걸리는 시간 더하기
+
          */
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
@@ -54,8 +63,9 @@ public class Main {
         LinkedList<Integer> pc = preConstructed.get(index);
         int buildTime = 0;
 
+        // 먼저 지어야 하는 건물 리스트가 다 지어지는 경우 -> 가장 지어지는 시간이 오래걸리는 건물 찾기
         for (Integer num : pc) {
-            buildTime += dfs(num);
+            buildTime = Math.max(buildTime, dfs(num));
         }
 
         dp[index] = buildTime + buildInfo[index];
