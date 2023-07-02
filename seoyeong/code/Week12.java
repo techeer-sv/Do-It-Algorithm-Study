@@ -1,6 +1,14 @@
 // 동굴 탐험
 // https://school.programmers.co.kr/learn/courses/30/lessons/67260
 
+// 아이디어
+// 1. 양방형으로 연결된 통로를 모두 저장한다.
+// 2. 0번 노드를 시작으로, 탐색한다. 어차피 모든 노드들은 트리형태로 완전히 연결되어 있다. 다만 아래 주의사항 조건을 확인한다.
+//    2-1. orders에 있는 첫번째 노드는 pre, 두번째 노드는 next이다.
+//    2-2. 어떠한 경우에도 next가 pre보다 먼저 방문되면 안된다.
+//    2-3. 만약 탐색 도중 next 속 노드가 있을 경우, 이를 무시한다. (큐의 완전 뒷 순서로 이동 후, 나중에 탐색되도록 한다.)
+
+
 import java.util.*;
 
 public class DoitJava_Week12 {
