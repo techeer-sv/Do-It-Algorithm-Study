@@ -22,6 +22,23 @@ class Main {
             }
         }
 
+        for(ArrayList<Integer> ls : list) {
+            int result = ls.get(0);
+            int max = 0;
+            for(int j = 1; j < ls.size(); j++) {
+                int bulid = ls.get(j);
+                int te = arr[bulid-1];
+                if(te > max) {
+                    max = te;
+                }
+            }
+            result += max;
+            arr[index++] = result;
+        }
+
+        for(int c : arr) {
+            System.out.println(c);
+        }
 
     }
 }
