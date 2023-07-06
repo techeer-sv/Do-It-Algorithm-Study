@@ -1,20 +1,22 @@
 import java.util.*;
 
-class Main {
+public class Main {
 
-    public static void main(String[] args){
-        int[] answer;
-        boolean flag = true;
-        Scanner scan = new Scanner(System.in);
-        int N = scan.nextInt();
-        ArrayList<Integer> list[] = new ArrayList[N];
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int num = scanner.nextInt();
+        ArrayList<Integer>[] list = new ArrayList[num];
+        int[] arr = new int[num];
+        int index = 0;
 
-        //입력
-        for(int i=0; i<N+1; i++){
+
+        // input 값 저장
+        for(int i = 0; i<num; i++) {
             list[i] = new ArrayList<Integer>();
-            while(flag){
+            boolean flag = true;
+            while(flag) {
                 int n = scanner.nextInt();
-                if(n == -1){
+                if(n == -1) {
                     flag = false;
                     continue;
                 }
@@ -39,6 +41,5 @@ class Main {
         for(int c : arr) {
             System.out.println(c);
         }
-
     }
 }
