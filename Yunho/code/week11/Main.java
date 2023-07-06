@@ -6,15 +6,58 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    /**
-     * 1. 첫줄에서 받은 값만큼의 큐를 선언함 
-     * 2. 다음 줄 부터 받은 내용을 각 큐에 저장을 함
-     * 3. 큐에서 첫번째 요소 더하기 (-1)이 나올때 까지 각 번쨰의 큐의 첫 번째 요소 합을 순차적으로 출력함? 
-     * 
-     * 
-     *  (고려사항) 다른 큐에서 선행적으로 이루어져야 하는 큐를 요구할 경우 합이 꼬이는 경우가 있을 거 같은데 방법을 생각중
-     */
-	public static void main(String[] args) {
-		
-	}
+    public static void main(String[] args) throws IOException {
+        int[] time; // 건설 시간
+        int[] inDegree; // 선행 건물 수
+        int[] result; // 완성 시간
+        ArrayList<Integer>[] graph; // 선행 건물 그래프
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine());
+        
+        time = new int[N + 1];
+        inDegree = new int[N + 1];
+        result = new int[N + 1];
+        graph = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i <= N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            time[i] = Integer.parseInt(st.nextToken());
+            while (st.hasMoreTokens()) {
+                int preBuilding = Integer.parseInt(st.nextToken());
+                if (preBuilding == -1) break;
+                graph[preBuilding].add(i);
+                inDegree[i]++;
+            }
+        }
+        Queue<Integer> queue = new LinkedList<>();
+
+        for (int i = 1; i <= N; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+                result[i] = time[i];
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            int building = queue.poll();
+            for (int nextBuilding : graph[building]) {
+                result[nextBuilding] = Math.max(result[nextBuilding], result[building] + time[nextBuilding]);
+
+                if (--inDegree[nextBuilding] == 0) {
+                    queue.offer(nextBuilding);
+                }
+            }
+        }
+        for (int i = 1; i <= N; i++) {
+            bw.write(result[i] + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+        br.close();
+    }
 }
