@@ -8,8 +8,10 @@
 //    2-2. 어떠한 경우에도 next가 pre보다 먼저 방문되면 안된다.
 //    2-3. 만약 탐색 도중 next 속 노드가 있을 경우, 이를 무시한다. (큐의 완전 뒷 순서로 이동 후, 나중에 탐색되도록 한다.)
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class DoitJava_Week12 {
     public static void main(String[] args) {
@@ -21,29 +23,11 @@ public class DoitJava_Week12 {
         System.out.println(ans3);
     }
 
-//    public static int getAnIndegree (List<List<Integer>> r, Queue<Integer> q, int in){
-//        int res = 999999;
-//        while (!q.isEmpty()){
-//            int x = q.poll();
-//            if (r.get(x).contains(0)){
-//                res = in + 1;
-//                break;
-//            }
-//            for (int i=0; i<r.get(x).size(); i++){
-//                q.add(r.get(x).get(i));
-//                int y = getAnIndegree(r,q,in+1);
-//                if (res > y) res = y;
-//            }
-//        }
-//        return res;
-//    }
-
     public static boolean solution(int n, int[][] path, int[][] order) {
         // 초기화
-        long times = 0;
         int[] visited = new int[n];
-        int[] indegree = new int[n];
         Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> waitingRoom = new LinkedList<>();
         List<List<Integer>> rooms = new ArrayList<>();
         for (int i = 0; i < n; i++) rooms.add(new ArrayList<>());
         for (int i = 0; i < path.length; i++) {
@@ -52,23 +36,6 @@ public class DoitJava_Week12 {
             rooms.get(a).add(b);
             rooms.get(b).add(a);
         }
-
-        // 리스트 출력
-//        System.out.println("============Rooms============");
-//        for (int i=0; i<n; i++) System.out.println(i + " : " +rooms.get(i).toString());
-
-//        // 진입 차수 구하기 (원하는 노드 -> 0번 노드까지 최단기간)
-//        System.out.println("============Indegree============");
-//        System.out.println(0 + " : " +indegree[0]);
-//        for (int i=1; i<n; i++){
-//            if (rooms.get(i).contains(0)) indegree[i] = 1;
-//            else{
-//                queue.add(i);
-//                indegree[i] = getAnIndegree(rooms, queue, 0);
-//            }
-//            System.out.println(i + " : " +indegree[i]);
-//        }
-
 
         // 경로 탐색
         int cnt = n;
@@ -81,14 +48,22 @@ public class DoitJava_Week12 {
         }
 
         queue.add(0);
-        while (!queue.isEmpty() && times < 200000 * order.length) {
+        while (!queue.isEmpty()) {
             int x = queue.poll();
             if (next.contains(x)) {
+                if (x == 0) return false;
                 int idx = next.indexOf(x);
                 if (visited[pre.get(idx)] == 0) {
-                    queue.add(x);
-                    times++;
+                    waitingRoom.add(x);
                     continue;
+                }
+            }
+            else if (pre.contains(x)){
+                int idx = pre.indexOf(x);
+                if (waitingRoom.size() > 0 && waitingRoom.contains(next.get(idx))){
+                    int nextt = next.get(idx);
+                    waitingRoom.remove(nextt);
+                    queue.add(nextt);
                 }
             }
 
@@ -104,3 +79,4 @@ public class DoitJava_Week12 {
         return true;
     }
 }
+
