@@ -1,11 +1,9 @@
-
 class Solution {
-    /*
-        
-    */
     ArrayList<Long> numList;
+    int numL;
     public boolean PredictTheWinner(int[] nums) {
-        numList = new ArrayList<Long>(nums.length);
+        numL = nums.length;
+        numList = new ArrayList<Long>(numL);
         long sum = 0;
 
         for (long n : nums){
@@ -13,23 +11,24 @@ class Solution {
             sum += n;
         }
 
-        long play1MaxScore = playGame(0, nums.length-1, 0);
-        System.out.println(play1MaxScore);
+        if (numL == 1)
+            return true;
 
-        return sum - play1MaxScore <= play1MaxScore;
+        long p1S = playGame(0, nums.length-1);
+        
+        return p1S >= sum-p1S;
     }
 
-    public Long playGame(int left, int right, int index){
-        if (left == right){
-            return numList.get(left);
+    public long playGame(int left, int right){
+        if (left > right){
+            return 0;
         }
-
-        if (index % 2 == 1){
-            return numList.get(left) > numList.get(right) 
-            ? playGame(left+1, right, index+1) : playGame(left, right-1, index+1);
-        } else {
-            return Math.max(numList.get(left) + playGame(left+1, right, index+1),
-            numList.get(right) + playGame(left, right-1, index+1));
-        }
+        
+        long leftChoice = numList.get(left) + Math.min(playGame(left+2, right),
+            playGame(left+1, right-1));
+        long rightChoice = numList.get(right) + Math.min(playGame(left+1, right-1),
+            playGame(left, right-2));
+        return Math.max(leftChoice, rightChoice);
     }
+
 }
