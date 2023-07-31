@@ -19,7 +19,7 @@ public class DoitJava_Week16_2 {
 
         // 메모이제이션
         // 세로 n, 가로 21(0<=x<=20) 사이즈 배열 생성
-        int [][] dp = new int[n][21];
+        long [][] dp = new long[n][21];
         dp[0][nums[0]] = 1; // 첫 행에는 8열에 1 인입
 
         // 1행부터 +, - 한 값의 열에 개수를 추가한다. +1
