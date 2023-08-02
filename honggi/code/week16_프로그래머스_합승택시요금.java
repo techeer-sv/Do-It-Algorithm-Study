@@ -5,16 +5,15 @@ import java.util.Arrays;
 class Solution {
     
     /*
-        출발지를 기준으로, 연결된 길을 걸어가며 A와 B에 도착하는 요금 중 최소값 구하기
-        1. 현재 위치에서 A와 B에 도착하는 요금 중 최소값 구하기 (그리디)
-        2. 출발지로부터 연결된 길 까지 공동 택시 요금을 구하며 하단의 과정 반복 (dp)
-            1) 현재 위치(queue.pop)까지의 공통 요금을 제외하고, A와 B의 목적지 도착 요금 구하기
-            2) 1에서 구한 값과, 이전 위치에서 구한 1)값을 비교하여 최소값 갱신
-            3) 현재 위치와 연결된 모든 길(돌아온 길 제외)을 queue에 삽입
+        https://school.programmers.co.kr/learn/courses/30/lessons/72413
+
+        풀이 방법
+        1. 시작 위치 s에서 모든 정점에 대해 다익스트라 알고리즘을 적용하여 최소 요금 구하기
+        2. 출발지로부터 연결된 모든 길에 대해 하단의 과정 반복
+            1) queue에서 삭제한 현재 위치 i까지의 공통 요금(1번에서 구한 최소요금 활용)과, A와 B의 목적지 도착 요금을 구하여 합산
+            2) 이전 위치의 결과값과 비교하여 최솟값 갱신
+            3) 현재 위치와 연결된 모든 길에 대해, 방문하지 않은 지점을 queue에 삽입
         
-        배운점
-        - Arrays.fill이 반복문보다 빠르다.
-        - Arrays.setAll은 내부 함수를 활용하여 다양하게 사용 가능 (dp, i -> i*2) = 0 2 4 ..
     */
     class Fee{
         int loc;
@@ -77,8 +76,7 @@ class Solution {
         return result;
     }
     
-    
-    // dijkstra 시간복잡도 - nlogn (힙구조 사용)
+    // dijkstra 시간복잡도 - nlogn (힙구조 PriorityQueue 사용)
     public int[] calculateFee(int start, int end){
         boolean[] visited = new boolean[N+1];
         int[] dp = new int[N+1];
