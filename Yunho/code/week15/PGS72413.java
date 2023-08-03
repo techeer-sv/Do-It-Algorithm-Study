@@ -19,7 +19,7 @@ public class Solution {
         }
 
         // 가중치를 배열에 표현
-        for(int i=0; i<fares.length; i++){
+        for(int i = 0; i < fares.length; i++){
             for(int j=0; j<fares[i].length; j++){
                 int c = fares[i][0];
                 int d = fares[i][1];
@@ -38,6 +38,12 @@ public class Solution {
             }
         }
 
-        return arr[s][a] + arr[s][b];
+        // return arr[s][a] + arr[s][b];
+
+        int answer = arr[s][a] + arr[s][b];
+        for (int i = 0; i <= n; i++){
+            answer = Math.min(answer, arr[s][i] + arr[a][i] + arr[b][i]);
+        }
+        return answer;
     }
 }
