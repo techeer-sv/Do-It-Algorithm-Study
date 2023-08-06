@@ -28,6 +28,12 @@ public class Solution {
                 arr[d][c] = weight;
             }
         }
+        
+        // 자기 자신 초기화 
+        for(int i = 1; i <= n; i++) {
+            arr[i][i] = 0;
+        }
+
 
         // 경로중 가중치가 작은 부분을 선별 
         for(int i = 1; i < n+1; i++) {
