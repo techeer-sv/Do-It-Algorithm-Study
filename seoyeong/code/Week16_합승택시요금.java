@@ -59,6 +59,7 @@ public class DoitJava_Week16_1 {
             }
         }
 
+
         // 최소 합승 요금
         boolean [] visited = new boolean[N+1];
 
