@@ -59,37 +59,26 @@ public class DoitJava_Week16_1 {
             }
         }
 
+//        // 출력
+//        for (int i = 0; i < N+1; i++) {
+//            for (int j = 0; j < N+1; j++) {
+//                // 연결이 안되어 있는 경우
+//                if (dist[i][j] == 100_000_000) {
+//                    System.out.print("INF ");
+//                } else {
+//                    System.out.print(dist[i][j] + " ");
+//                }
+//            }
+//            System.out.println();
+//        }
+
 
         // 최소 합승 요금
-        boolean [] visited = new boolean[N+1];
+        int ans = dist[s][a] + dist[s][b];
 
-        visited[s] = true;
-        int ans = dist[s][a] + dist[s][b];  // 101 (직빵으로 가면 101)
-        int x_idx = s;
-        int x_val = 100000000;
-        int y_idx = 0;
-        int c = 0;
-
-
-        // N번 반복
-        for (int i = 0; i < N; i++){
-            // 현재 노드에서 이동할 수 있는 최소 거리
-            for (int j = 1; j < N+1; j++){
-                if (dist[x_idx][j] > 0 && dist[x_idx][j] < x_val && visited[j]==false){
-                    y_idx = j;
-                    x_val = dist[x_idx][j];
-                }
-            }
-
-            if (x_val == 100000000) break;
-            c += x_val; x_val = 100000000;
-            x_idx = y_idx; y_idx = 0;
-            visited[x_idx] = true;
-
-            // System.out.println((i+1)+"번째 "+"ans:"+ans + " c:" + c + " idx:"+ x_idx + " " + dist[x_idx][a] + " " + dist[x_idx][b]);
-            ans = Math.min(ans, c + dist[x_idx][a] + dist[x_idx][b]);
+        for(int i = 1; i < N+1; i++) {
+            ans = Math.min(ans, dist[s][i] + dist[i][a] +dist[i][b]);
         }
-
         return ans;
     }
 }
