@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Week18_섬연결하기 {
     static int[][] dist;
@@ -13,7 +13,7 @@ public class Week18_섬연결하기 {
     public static int solution(int n, int[][] costs) {
         int answer = 0;
         dist = new int[n+1][n+1];
-        ArrayList<int[]> paths = new ArrayList<>();
+        HashSet<String> hashSet = new HashSet<>();
 
         // 플로이드 초기 거리 테이블 초기화
         for (int i = 0; i < n+1; i++) {
@@ -56,37 +56,28 @@ public class Week18_섬연결하기 {
                 mini = Math.min(mini, dist[i][j]);
                 if (mini == dist[i][j]) idx = j;
             }
-            answer += mini;
+
             if (i < idx) cNode = new int[]{i, idx};
-            else cNode = new int[]{i, idx};
-            paths.add(cNode);
-        }
-
-        // 중복인 노드들을 제거 후, 카운트된 거리에서 뺀다.
-        int pi = 0;
-        while (paths.size()>0){
-            int [] s = paths.get(pi);
-
+            else cNode = new int[]{idx, i};
+            if (!hashSet.contains(cNode[0]+"-"+cNode[1])) answer += mini;
+            hashSet.add(cNode[0]+"-"+cNode[1]);
         }
         
         // 이어지지 않은 노드가 있다면, 그에 맞는 최단 거리를 구한다.
 
 
-//        // 출력
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j < n; j++) {
-//                if (dist[i][j] == 100_000_000) {
-//                    System.out.print("INF ");
-//                } else {
-//                    System.out.print(dist[i][j] + " ");
-//                }
-//            }
-//            System.out.println();
-//        }
-//        for (int[]a : paths){
-//            System.out.print(a[0]+"," +  a[1]+"\t");
-//        }
-//        System.out.println();
+        // 출력
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dist[i][j] == 100_000_000) {
+                    System.out.print("INF ");
+                } else {
+                    System.out.print(dist[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println(hashSet);
 
         return answer;
     }
