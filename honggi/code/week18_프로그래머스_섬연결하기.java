@@ -1,50 +1,62 @@
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+
 class Solution {
     /*
-        모든 섬을 연결하는데 드는 최소 비용 구하기
-        -> PriorityQueue를 사용하여 모든 정점을 연결하는데 드는 최소 비용 구하기
-        
-        1. 임의의 정점을 기준으로 bfs 탐색 진행
-        2. queue에서 제거한 섬을 기준으로 주변 정점을 탐색
-            1) 아직 방문하지 않은 섬이라면, 해당 섬까지의 최소 비용 업데이트 후 queue에 삽입
-            2) 방문한 섬이라면, 기존 최소 비용과 비교하여 더 작은경우 queue에 삽입
-        3. queue가 비어있을 때 까지 반복하여 최소 비용 합산
-
+        임의의 정점부터, 다른 모든 정점까지의 최소 비용을 구해야함
+        dijkstra를 사용하여 풀이
     */
     
     class Path{
         int dst;
         int cost;
         
-        Path(int d, int c){
+        public Path(int d, int c){
             this.dst = d;
             this.cost = c;
         }
     }
     
-    int[] dp;
-    LinkedList<Integer>[] paths;
+    LinkedList<Path>[] paths;
     public int solution(int n, int[][] costs) {
-        dp = new int[n];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        dp[0] = 0;
-        
         paths = new LinkedList[n];
+        
         for (int i = 0; i<n; i++){
             paths[i] = new LinkedList<>();
         }
         
-        return dijkstra(0);
+        for (int i = 0; i<costs.length; i++){
+            paths[costs[i][0]].add(new Path(costs[i][1], costs[i][2]));
+            paths[costs[i][1]].add(new Path(costs[i][0], costs[i][2]));
+        }
+
+        return dijkstra();
     }
     
-    private int dijkstra(int index){
-        PriorityQueue<Path> queue = new PriorityQueue((a,b) -> a.cost - b.cost);
-        int result = 0;
-        queue.add(index);
+    public int dijkstra(){
+        PriorityQueue<Path> queue = 
+            new PriorityQueue<>((a,b) -> a.cost - b.cost);
         
-        while (!queue.isEmpty()){
-            
+        int result = 0;
+        boolean[] visited = new boolean[paths.length];
+        visited[0] = true;
+        queue.addAll(paths[0]);
+        
+        while(!queue.isEmpty()){
+            Path p = queue.remove();
+            if (!visited[p.dst]){
+                visited[p.dst] = true;
+                result += p.cost;
+                
+                for (Path path : paths[p.dst]){
+                    if (!visited[path.dst]){
+                        queue.add(path);
+                    }
+                }
+            }
         }
         
         return result;
     }
+    
 }
