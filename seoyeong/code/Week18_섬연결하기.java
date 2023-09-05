@@ -37,10 +37,6 @@ public class Week18_섬연결하기 {
             dist[end][start] = Math.min(dist[end][start], cost);
         }
 
-
-
-
-
         // 2. 플로이드 워셜 알고리즘 (각 노드에서 최단 거리)
         for (int k = 0; k < n+1; k++) {
             for (int i = 0; i < n+1; i++) {
@@ -49,9 +45,6 @@ public class Week18_섬연결하기 {
                 }
             }
         }
-
-
-
 
         // 3. 각 노드의 최단거리인 노드들을 한 세트로 묶고, 그 거리를 카운트해둔다.
         int mini, idx, val;
